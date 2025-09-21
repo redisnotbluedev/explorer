@@ -1,0 +1,61 @@
+[gd_scene load_steps=11 format=3 uid="uid://cuvgi6h8q4bku"]
+
+[ext_resource type="Script" uid="uid://382i2h6mgxo4" path="res://scripts/spin.gd" id="1_o5qli"]
+[ext_resource type="Texture2D" uid="uid://d0nmer15qio1c" path="res://assets/skyboxes/starmap_2020_4k_print.jpg" id="1_sugp2"]
+[ext_resource type="Texture2D" uid="uid://do4lnx1w58cpg" path="res://assets/textures/earth.jpg" id="3_sugp2"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_sugp2"]
+panorama = ExtResource("1_sugp2")
+
+[sub_resource type="Sky" id="Sky_jyhfs"]
+sky_material = SubResource("PanoramaSkyMaterial_sugp2")
+
+[sub_resource type="Environment" id="Environment_0xm2m"]
+background_mode = 2
+sky = SubResource("Sky_jyhfs")
+glow_enabled = true
+glow_levels/2 = 1.0
+glow_levels/4 = 0.5
+glow_levels/5 = 0.2
+glow_blend_mode = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
+emission_enabled = true
+emission = Color(1, 1, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_1bvp3"]
+material = SubResource("StandardMaterial3D_h2yge")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lquwl"]
+albedo_texture = ExtResource("3_sugp2")
+emission_enabled = true
+emission = Color(0, 0, 1, 1)
+emission_energy_multiplier = 0.4
+
+[sub_resource type="SphereMesh" id="SphereMesh_7mycd"]
+material = SubResource("StandardMaterial3D_lquwl")
+radius = 0.2
+height = 0.4
+
+[node name="System" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_0xm2m")
+
+[node name="Sun" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Sun"]
+mesh = SubResource("SphereMesh_1bvp3")
+
+[node name="PlanetA" type="Node3D" parent="Sun"]
+script = ExtResource("1_o5qli")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Sun/PlanetA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+mesh = SubResource("SphereMesh_7mycd")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 3.7289896, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.371138e-08, 1)
