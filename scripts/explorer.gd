@@ -1,7 +1,7 @@
-extends Control
+extends Node3D
 
 
-@onready var files: VBoxContainer = $Scroll/Files
+@onready var files: VBoxContainer = VBoxContainer.new()
 var dir: DirAccess = DirAccess.open("C:/")
 
 func _ready() -> void:
@@ -15,13 +15,7 @@ func _on_item_clicked(name) -> void:
 		print("Error " + error_string(error))
 
 func process_item(item: Dictionary) -> void:
-	var node: Button = Button.new()
-	node.text = ("F: " if item["type"] == "file" else "D: ") + item["name"]
-	if item["type"] == "folder":
-		node.pressed.connect(_on_item_clicked.bind(item["name"]))
-	else:
-		node.pressed.connect(OS.shell_open.bind(item["path"]))
-	files.add_child(node)
+	print(item["name"])
 
 func clear_list() -> void:
 	for child in files.get_children():
@@ -39,10 +33,19 @@ func update_explorer() -> void:
 		
 		var items: Array[Dictionary] = []
 		var curr: String = dir.get_current_dir()
-		for file in dir.get_files():
-			items.append({"type": "file", "name": file, "path": curr.path_join(file)})
-		for folder in dir.get_directories():
-			items.append({"type": "folder", "name": folder, "path": curr.path_join(folder)})
+		
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		
+		while file_name != "":
+			var item: Dictionary = {
+				"type": "folder" if dir.current_is_dir() else "file",
+				"name": file_name,
+				"path": curr.path_join(file_name)
+			}
+			items.append(item)
+			file_name = dir.get_next()
+		
 		items.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a["name"] < b["name"])
 		
 		for item in items:

@@ -1,8 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://cuvgi6h8q4bku"]
+[gd_scene load_steps=13 format=3 uid="uid://cuvgi6h8q4bku"]
 
+[ext_resource type="Script" uid="uid://dofmrpp6p5t38" path="res://scripts/explorer.gd" id="1_jyhfs"]
 [ext_resource type="Script" uid="uid://382i2h6mgxo4" path="res://scripts/spin.gd" id="1_o5qli"]
 [ext_resource type="Texture2D" uid="uid://d0nmer15qio1c" path="res://assets/skyboxes/starmap_2020_4k_print.jpg" id="1_sugp2"]
 [ext_resource type="Texture2D" uid="uid://do4lnx1w58cpg" path="res://assets/textures/earth.jpg" id="3_sugp2"]
+[ext_resource type="Shader" uid="uid://yyjrl88f0iuf" path="res://shaders/palette.gdshader" id="4_jyhfs"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_sugp2"]
 panorama = ExtResource("1_sugp2")
@@ -26,18 +28,22 @@ emission = Color(1, 1, 0, 1)
 [sub_resource type="SphereMesh" id="SphereMesh_1bvp3"]
 material = SubResource("StandardMaterial3D_h2yge")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lquwl"]
-albedo_texture = ExtResource("3_sugp2")
-emission_enabled = true
-emission = Color(0, 0, 1, 1)
-emission_energy_multiplier = 0.4
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tbgi4"]
+render_priority = 0
+shader = ExtResource("4_jyhfs")
+shader_parameter/base_texture = ExtResource("3_sugp2")
+shader_parameter/colors_from = PackedColorArray(0.2901961, 0.39215687, 0.53333336, 1, 0.62352943, 0.5921569, 0.5568628, 1)
+shader_parameter/colors_to = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1)
+shader_parameter/thresholds = PackedFloat32Array(0.3, 2)
+shader_parameter/active_swaps = 2
 
 [sub_resource type="SphereMesh" id="SphereMesh_7mycd"]
-material = SubResource("StandardMaterial3D_lquwl")
+material = SubResource("ShaderMaterial_tbgi4")
 radius = 0.2
 height = 0.4
 
 [node name="System" type="Node3D"]
+script = ExtResource("1_jyhfs")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_0xm2m")
