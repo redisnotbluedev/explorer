@@ -1,0 +1,8 @@
+[
+	{
+		"name": "Earth",
+		"path": "res://assets/textures/earth.jpg",
+		"colours": ["#4a6488", "#9f978e"],
+		"thresholds": [0.3, 2.0]
+	}
+]

@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://e7idu2xesc5r"]
+
+[ext_resource type="Shader" uid="uid://bn4f033gneev2" path="res://assets/shaders/trapezoid.gdshader" id="1_nt7q6"]
+[ext_resource type="Script" uid="uid://bce1inyer11gm" path="res://scripts/ui.gd" id="1_x4jx1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x4jx1"]
+shader = ExtResource("1_nt7q6")
+shader_parameter/level = 0.5
+
+[node name="UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_x4jx1")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 0.1
+grow_vertical = 2
+theme_override_font_sizes/font_size = 16
+text = " Unknown Error"
+vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="Label"]
+modulate = Color(1, 1, 1, 0.3529412)
+show_behind_parent = true
+material = SubResource("ShaderMaterial_x4jx1")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.025
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.7254902, 1, 1)

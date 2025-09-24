@@ -1,16 +1,14 @@
-[gd_scene load_steps=13 format=3 uid="uid://cuvgi6h8q4bku"]
+[gd_scene load_steps=10 format=3 uid="uid://cuvgi6h8q4bku"]
 
 [ext_resource type="Script" uid="uid://dofmrpp6p5t38" path="res://scripts/explorer.gd" id="1_jyhfs"]
-[ext_resource type="Script" uid="uid://382i2h6mgxo4" path="res://scripts/spin.gd" id="1_o5qli"]
 [ext_resource type="Texture2D" uid="uid://d0nmer15qio1c" path="res://assets/skyboxes/starmap_2020_4k_print.jpg" id="1_sugp2"]
-[ext_resource type="Texture2D" uid="uid://do4lnx1w58cpg" path="res://assets/textures/earth.jpg" id="3_sugp2"]
-[ext_resource type="Shader" uid="uid://yyjrl88f0iuf" path="res://shaders/palette.gdshader" id="4_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://e7idu2xesc5r" path="res://scenes/ui.tscn" id="3_sugp2"]
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_sugp2"]
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_0wfyh"]
 panorama = ExtResource("1_sugp2")
 
 [sub_resource type="Sky" id="Sky_jyhfs"]
-sky_material = SubResource("PanoramaSkyMaterial_sugp2")
+sky_material = SubResource("PanoramaSkyMaterial_0wfyh")
 
 [sub_resource type="Environment" id="Environment_0xm2m"]
 background_mode = 2
@@ -21,26 +19,14 @@ glow_levels/4 = 0.5
 glow_levels/5 = 0.2
 glow_blend_mode = 1
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_0wfyh"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
 emission_enabled = true
 emission = Color(1, 1, 0, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_1bvp3"]
 material = SubResource("StandardMaterial3D_h2yge")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tbgi4"]
-render_priority = 0
-shader = ExtResource("4_jyhfs")
-shader_parameter/base_texture = ExtResource("3_sugp2")
-shader_parameter/colors_from = PackedColorArray(0.2901961, 0.39215687, 0.53333336, 1, 0.62352943, 0.5921569, 0.5568628, 1)
-shader_parameter/colors_to = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1)
-shader_parameter/thresholds = PackedFloat32Array(0.3, 2)
-shader_parameter/active_swaps = 2
-
-[sub_resource type="SphereMesh" id="SphereMesh_7mycd"]
-material = SubResource("ShaderMaterial_tbgi4")
-radius = 0.2
-height = 0.4
 
 [node name="System" type="Node3D"]
 script = ExtResource("1_jyhfs")
@@ -50,18 +36,25 @@ environment = SubResource("Environment_0xm2m")
 
 [node name="Sun" type="Node3D" parent="."]
 
+[node name="Area3D" type="Area3D" parent="Sun"]
+collision_layer = 2
+collision_mask = 2
+input_capture_on_drag = true
+metadata/type = "folder"
+metadata/path = ".."
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sun/Area3D"]
+shape = SubResource("SphereShape3D_0wfyh")
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Sun"]
 mesh = SubResource("SphereMesh_1bvp3")
 
-[node name="PlanetA" type="Node3D" parent="Sun"]
-script = ExtResource("1_o5qli")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Sun/PlanetA"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
-mesh = SubResource("SphereMesh_7mycd")
+[node name="Planets" type="Node3D" parent="Sun"]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 3.7289896, 0)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 6.7289896, 0)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.371138e-08, 1)
+
+[node name="UI" parent="." instance=ExtResource("3_sugp2")]
